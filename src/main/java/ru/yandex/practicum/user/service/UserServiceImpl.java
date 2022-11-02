@@ -1,12 +1,27 @@
-package ru.yandex.practicum.user;
+package ru.yandex.practicum.user.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.NotFoundRecordInBD;
 import ru.yandex.practicum.exception.ValidateException;
 import ru.yandex.practicum.user.model.User;
+import ru.yandex.practicum.user.repository.UserRepository;
+import ru.yandex.practicum.validation.ValidationService;
 
 import java.util.List;
 
-public interface UserService {
+@Service
+@Slf4j
+public class UserServiceImpl implements UserService {
+    
+    private final UserRepository userRepository;
+    private final ValidationService validationService;
+    
+    public UserServiceImpl(@Qualifier("InMemory") UserRepository userRepository, ValidationService validationService) {
+        this.userRepository = userRepository;
+        this.validationService = validationService;
+    }
     
     /**
      * Получить пользователя по ID.
@@ -15,15 +30,26 @@ public interface UserService {
      * @return User - пользователь присутствует в библиотеке.
      * <p>null - пользователя нет в библиотеке.</p>
      */
-    User getUserById(Long id);
+    @Override
+    public User getUserById(Long id) {
+        User result = userRepository.getUserById(id);
+        if (result == null) {
+            String error = "В БД отсутствует запись о пользователе при получении пользователя по ID = " + id + ".";
+            log.error(error);
+            throw new NotFoundRecordInBD(error);
+        }
+        return result;
+    }
     
     /**
      * Получение списка всех пользователей.
      *
      * @return Список пользователей.
      */
-    List<User> getAllUsers();
-    
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsersFromStorage();
+    }
     
     /**
      * Добавить юзера в БД.
@@ -31,7 +57,12 @@ public interface UserService {
      * @param user пользователь.
      * @return добавляемый пользователь.
      */
-    User addToStorage(User user) throws ValidateException, NotFoundRecordInBD;
+    @Override
+    public User addToStorage(User user) throws ValidateException, NotFoundRecordInBD {
+        validationService.validateUserFields(user);
+        validationService.checkUniqueEmail(user);
+        return userRepository.addToStorage(user);
+    }
     
     /**
      * Обновить юзера в БД.
@@ -39,7 +70,10 @@ public interface UserService {
      * @param user пользователь
      * @return обновлённый пользователь.
      */
-    User updateInStorage(User user);
+    @Override
+    public User updateInStorage(User user) {
+        return null;
+    }
     
     /**
      * Удалить пользователя из БД.
@@ -47,8 +81,10 @@ public interface UserService {
      * @param id ID удаляемого пользователя
      * @throws NotFoundRecordInBD из метода validationService.checkExistUserInDB(id).
      */
-    void removeFromStorage(Long id);
+    @Override
+    public void removeFromStorage(Long id) {
     
+    }
     
     /**
      * Добавить пользователей с ID1 и ID2 в друзья.
@@ -56,7 +92,10 @@ public interface UserService {
      * @param id1 пользователь №1;
      * @param id2 пользователь №2.
      */
-    void addEachOtherAsFriends(Long id1, Long id2);
+    @Override
+    public void addEachOtherAsFriends(Long id1, Long id2) {
+    
+    }
     
     /**
      * Удалить пользователей из друзей.
@@ -64,8 +103,10 @@ public interface UserService {
      * @param id1 пользователь №1.
      * @param id2 пользователь №2.
      */
-    void deleteFromFriends(Long id1, Long id2);
+    @Override
+    public void deleteFromFriends(Long id1, Long id2) {
     
+    }
     
     /**
      * Вывести список общих друзей.
@@ -74,7 +115,10 @@ public interface UserService {
      * @param id2 пользователь №2
      * @return список общих друзей.
      */
-    List<User> getCommonFriends(Long id1, Long id2);
+    @Override
+    public List<User> getCommonFriends(Long id1, Long id2) {
+        return null;
+    }
     
     /**
      * Вывести список друзей пользователя с ID.
@@ -82,7 +126,10 @@ public interface UserService {
      * @param id ID пользователя.
      * @return список друзей.
      */
-    List<User> getUserFriends(Long id);
+    @Override
+    public List<User> getUserFriends(Long id) {
+        return null;
+    }
     
     /**
      * Метод проверки наличия пользователя в базе данных по ID.
@@ -93,5 +140,20 @@ public interface UserService {
      * присвоив ему ID из базы данных.
      * <p>null - пользователя нет в базе данных.</p>
      */
-    Integer idFromDBByID(Long id);
+    @Override
+    public Integer idFromDBByID(Long id) {
+        return null;
+    }
+    
+    /**
+     * Проверка наличия пользователя по `Email`.
+     *
+     * @param newEmail адрес эл. почты нового пользователя.
+     * @return True - пользователь с Email есть в БД. False - нет.
+     */
+    @Override
+    public boolean isExistUserByEmail(String newEmail) {
+        return userRepository.isExistUserByEmail(newEmail);
+    }
+    
 }
