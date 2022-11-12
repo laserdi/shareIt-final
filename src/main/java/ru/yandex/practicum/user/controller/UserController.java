@@ -10,6 +10,8 @@ import ru.yandex.practicum.user.dto.UserDto;
 import ru.yandex.practicum.user.mapper.UserMapper;
 import ru.yandex.practicum.user.model.User;
 import ru.yandex.practicum.user.service.UserService;
+import ru.yandex.practicum.validation.CreateObject;
+import ru.yandex.practicum.validation.UpdateObject;
 import ru.yandex.practicum.validation.ValidationService;
 
 import java.util.ArrayList;
@@ -22,17 +24,25 @@ import java.util.List;
 @Validated
 public class UserController {
     private final UserService service;
-    private UserMapper mapper;
-    private ValidationService validationService;
+    private final UserMapper mapper;
+    private final ValidationService validationService;
+    
+/*
+    @Autowired
+    public UserController(UserService service, ValidationService validationService, UserMapper mapper) {
+        this.service = service;
+        this.validationService = validationService;
+        this.mapper = mapper;
+    }
+*/
     
     /**
      * Добавить юзера в БД.
-     *
      * @param userDto пользователь.
      * @return добавляемый пользователь.
      */
     @PostMapping
-    ResponseEntity<UserDto> addToStorage(@RequestBody UserDto userDto) {
+    ResponseEntity<UserDto> addToStorage(@RequestBody @Validated(CreateObject.class) UserDto userDto) {
         
         User user = mapper.mapToModel(userDto);
         User createdUser = service.addToStorage(user);
@@ -46,30 +56,36 @@ public class UserController {
     
     /**
      * Обновить юзера в БД.
-     *
-     * @param user пользователь
+     * @param userDto пользователь
+     * @param userId  ID обновляемого пользователя.
      * @return обновлённый пользователь.
      */
-    User updateInStorage(User user) {
-        return null;
+    @PatchMapping("/{userId}")
+    UserDto updateInStorage(@PathVariable long userId,
+                            @Validated({UpdateObject.class}) @RequestBody UserDto userDto) {
+        userDto.setId(userId);
+        User user = mapper.mapToModel(userDto);
+        User updatedUser = service.updateInStorage(user);
+        log.info("Выполнено обновление пользователя в БД.");
+        return mapper.mapToDto(updatedUser);
     }
     
     /**
      * Удалить пользователя из БД.
-     *
-     * @param id ID удаляемого пользователя.
+     * @param userId ID удаляемого пользователя.
      */
-    ResponseEntity<String> removeFromStorage(Long id) {
-        service.removeFromStorage(id);
+    @DeleteMapping("/{userId}")
+    ResponseEntity<String> removeFromStorage(@PathVariable Long userId) {
+        User deletedUser = validationService.checkExistUserInDB(userId);
+        service.removeFromStorage(userId);
         // TODO: 01.11.2022 Удалить вещи пользователя.
-        String message = String.format("Выполнено удаление пользователя с ID = %d.", id);
+        String message = String.format("Выполнено удаление пользователя с ID = %d. %s", userId, deletedUser);
         log.info(message);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
     
     /**
      * Получить список всех пользователей.
-     *
      * @return список пользователей.
      */
     @GetMapping
@@ -77,27 +93,27 @@ public class UserController {
         List<UserDto> allUsersDto = new ArrayList<>();
         List<User> allUsers = service.getAllUsers();
         
-        allUsers.stream().map(user -> mapper.mapToDto(user)).forEach(allUsersDto::add);
+        allUsers.stream().map(mapper::mapToDto).forEach(allUsersDto::add);
         
-        ResponseEntity<List<UserDto>> response = new ResponseEntity<>(
-                allUsersDto, HttpStatus.OK);
+        ResponseEntity<List<UserDto>> response = new ResponseEntity<>(allUsersDto, HttpStatus.OK);
         log.info("Выдан список всех пользователей.");
         return response;
     }
     
     /**
      * Получить пользователя по ID.
-     *
-     * @param id ID пользователя.
+     * @param userId ID пользователя.
      * @return User - пользователь присутствует в библиотеке.
      * <p>null - пользователя нет в библиотеке.</p>
      */
-    ResponseEntity<UserDto> getUserById(Long id) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+        //Nuzhen li proverka? Ili eyo v service?
+        validationService.checkExistUserInDB(userId);
         ResponseEntity<UserDto> response = new ResponseEntity<>(
-                mapper.mapToDto(service.getUserById(id)), HttpStatus.OK);
-        String message = String.format("Выдан ответ на запрос пользователя по ID = %d:\t%s", id, response);
+                mapper.mapToDto(service.getUserById(userId)), HttpStatus.OK);
+        String message = String.format("Выдан ответ на запрос пользователя по ID = %d:\t%s", userId, response);
         log.info(message);
         return response;
     }
-    
 }

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.item;
+package ru.yandex.practicum.item.repository;
 
 import ru.yandex.practicum.item.model.Item;
 
@@ -15,22 +15,19 @@ public interface ItemRepository {
     
     /**
      * Получить список всех вещей.
-     *
      * @return список вещей.
      */
-    List<Item> getAllItems();
+    List<Item> getAllItems(Long userId);
     
     /**
      * Получить вещь по ID.
-     *
      * @param id ID вещи.
      * @return запрашиваемая вещь.
      */
     Item getItemById(Long id);
-
+    
     /**
      * Есть ли вещь с ID в хранилище?
-     *
      * @param id ID запрашиваемой вещи.
      * @return True - вещь есть в хранилище, False - вещи нет в хранилище.
      */
@@ -38,7 +35,6 @@ public interface ItemRepository {
     
     /**
      * Удалить вещь с ID из хранилища.
-     *
      * @param id ID удаляемой вещи.
      */
     void removeItemById(Long id);
@@ -49,4 +45,17 @@ public interface ItemRepository {
      */
     void removeItemsByUserId(Long userId);
     
+    /**
+     * Обновить вещь в БД.
+     * @param item вещь.
+     * @return обновлённая вещь.
+     */
+    public Item updateInStorage(Item item, boolean[] isUpdateField);
+    
+    /**
+     * Поиск вещей по тексту.
+     * @param text текст.
+     * @return список вещей.
+     */
+    List<Item> searchItemsByText(String text);
 }

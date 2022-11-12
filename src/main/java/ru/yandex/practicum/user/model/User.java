@@ -1,20 +1,13 @@
 package ru.yandex.practicum.user.model;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 
 @Data
+@RequiredArgsConstructor
 public class User {
-    /**
-     * ID пользователя.
-     */
-    Long id;        //ID
-    /**
-     * Имя пользователя.
-     */
+    Long id;        //ID пользователя.
     String name;    //Имя пользователя.
-    /**
-     * Электронная почта.
-     */
     String email;   //Электронная почта.
 }

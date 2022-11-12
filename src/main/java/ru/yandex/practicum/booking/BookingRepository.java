@@ -6,14 +6,12 @@ public interface BookingRepository {
     
     /**
      * Получить список всех бронирований.
-     *
      * @return список бронирований.
      */
     List<Booking> getAllBookings();
     
     /**
      * Получить бронирование по ID.
-     *
      * @param id ID брони.
      * @return запрашиваемое бронирование.
      */

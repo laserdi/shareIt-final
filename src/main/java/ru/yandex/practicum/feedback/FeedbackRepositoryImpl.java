@@ -14,7 +14,6 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     
     /**
      * Получить все отзывы о вещах.
-     *
      * @return список отзывов.
      */
     @Override
@@ -24,7 +23,6 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     
     /**
      * Получить отзыв по его ID.
-     *
      * @param id ID отзыва.
      * @return запрашиваемый отзыв.
      */
@@ -35,7 +33,6 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     
     /**
      * Получить список отзывов на вещь с id.
-     *
      * @param itemId ID вещи, для которой надо найти отзывы.
      * @return список отзывов вещи с ID.
      */
@@ -48,7 +45,6 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     
     /**
      * Есть ли запрашиваемый отзыв с ID в хранилище.
-     *
      * @param id ID запрашиваемого отзыва.
      * @return запрашиваемый отзыв.
      */
@@ -59,7 +55,6 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     
     /**
      * Удалить отзыв с ID из хранилища.
-     *
      * @param id ID удаляемого отзыва.
      */
     @Override
@@ -69,7 +64,6 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     
     /**
      * Удалить все отзывы вещи с ID = itemId.
-     *
      * @param itemId ID вещи.
      */
     @Override

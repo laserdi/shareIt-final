@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Получить пользователя по ID.
-     *
      * @param id ID пользователя.
      * @return User - пользователь присутствует в библиотеке.
      * <p>null - пользователя нет в библиотеке.</p>
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
         User result = userRepository.getUserById(id);
         if (result == null) {
             String error = "В БД отсутствует запись о пользователе при получении пользователя по ID = " + id + ".";
-            log.error(error);
+            log.info(error);
             throw new NotFoundRecordInBD(error);
         }
         return result;
@@ -43,7 +42,6 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Получение списка всех пользователей.
-     *
      * @return Список пользователей.
      */
     @Override
@@ -53,42 +51,41 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Добавить юзера в БД.
-     *
      * @param user пользователь.
      * @return добавляемый пользователь.
      */
     @Override
     public User addToStorage(User user) throws ValidateException, NotFoundRecordInBD {
         validationService.validateUserFields(user);
-        validationService.checkUniqueEmail(user);
+        validationService.checkUniqueEmailToCreate(user);
         return userRepository.addToStorage(user);
     }
     
     /**
      * Обновить юзера в БД.
-     *
      * @param user пользователь
      * @return обновлённый пользователь.
      */
     @Override
     public User updateInStorage(User user) {
-        return null;
+        validationService.checkExistUserInDB(user.getId());
+        boolean[] isUpdateFields = validationService.checkFieldsForUpdate(user);
+        validationService.checkUniqueEmailToUpdate(user);
+        return userRepository.updateInStorage(user, isUpdateFields);
     }
     
     /**
      * Удалить пользователя из БД.
-     *
      * @param id ID удаляемого пользователя
      * @throws NotFoundRecordInBD из метода validationService.checkExistUserInDB(id).
      */
     @Override
     public void removeFromStorage(Long id) {
-    
+        userRepository.removeFromStorage(id);
     }
     
     /**
      * Добавить пользователей с ID1 и ID2 в друзья.
-     *
      * @param id1 пользователь №1;
      * @param id2 пользователь №2.
      */
@@ -99,7 +96,6 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Удалить пользователей из друзей.
-     *
      * @param id1 пользователь №1.
      * @param id2 пользователь №2.
      */
@@ -110,7 +106,6 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Вывести список общих друзей.
-     *
      * @param id1 пользователь №1
      * @param id2 пользователь №2
      * @return список общих друзей.
@@ -122,7 +117,6 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Вывести список друзей пользователя с ID.
-     *
      * @param id ID пользователя.
      * @return список друзей.
      */
@@ -133,11 +127,9 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Метод проверки наличия пользователя в базе данных по ID.
-     *
      * @param id пользователь, наличие логина которого необходимо проверить в базе данных.
-     * @return ID, найденный в БД по логину.
-     * Если возвращается не null, то после этой проверки можно обновлять пользователя,
-     * присвоив ему ID из базы данных.
+     * @return ID, найденный в БД по логину. Если возвращается не null, то после этой проверки можно обновлять
+     * пользователя, присвоив ему ID из базы данных.
      * <p>null - пользователя нет в базе данных.</p>
      */
     @Override
@@ -147,13 +139,14 @@ public class UserServiceImpl implements UserService {
     
     /**
      * Проверка наличия пользователя по `Email`.
-     *
      * @param newEmail адрес эл. почты нового пользователя.
-     * @return True - пользователь с Email есть в БД. False - нет.
+     * @return ID пользователя с Email, если он есть в БД.
+     * <p>Null, если нет.</p>
      */
     @Override
-    public boolean isExistUserByEmail(String newEmail) {
-        return userRepository.isExistUserByEmail(newEmail);
+    public Long getUserIdByEmail(String newEmail) {
+        return userRepository.getUserIdByEmail(newEmail);
     }
+    
     
 }

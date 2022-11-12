@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>ru.practicum</groupId>
-    <artifactId>Sprint14-Final</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -15,91 +9,35 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <groupId>ru.practicum</groupId>
+    <artifactId>shareit</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>ShareIt</name>
+
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
+
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
 
     <dependencies>
-<!--
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            &lt;!&ndash;Слово “embed” в названии зависимости — это сокращение от англ. “embedded” — «встроенный».
-            Контейнер будет встроен в наш проект — нам не нужно будет его запускать как отдельное приложение.
-            Слово “core” можно перевести как «ядро» или «основа», это означает, что зависимость включает в себя
-            только основные функции — нам их будет достаточно.&ndash;&gt;
-            <version>9.0.65</version>
-            &lt;!&ndash;Нам требуется версия 9.x — использует пакеты с базовыми классами сервлетов,
-            начинающиеся на javax.servlet. Версия 10.x использует пакеты jakarta.servlet.
-            Мы будем использовать javax.servlet и Tomcat 9.x, потому что Spring 5-й версии
-            ещё не перешёл на использование новых пакетов и «не дружит» с Tomcat 10.&ndash;&gt;
-        </dependency>
--->
-
-
-
-<!--
-        &lt;!&ndash;Чтобы заменить TestServlet на более полезный DispacherServlet, нужно
-        создать WebApplicationContext — без него сервлет-диспетчер не будет работать.
-        Для создания контекста добавьте в pom.xml зависимость spring-webmvc.
-        На самом деле хватило бы и spring-context, но мы сразу добавим webmvc,
-        так как потом будем работать с контроллерами. spring-context добавится автоматически,
-        как транзитивная зависимость spring-webmvc.&ndash;&gt;
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>5.3.23</version>
-        </dependency>
--->
-
-        <!--Сначала добавьте зависимость lombok в pom.xml — это позволит сократить количество кода.-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-        </dependency>
-
-<!--
-        &lt;!&ndash;Чтобы научить Spring превращать объекты в JSON, подключим библиотеку Jackson.
-        Для этого добавьте нужную зависимость в pom.xml.&ndash;&gt;
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.13.4.2</version>
-        </dependency>
--->
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.4</version>
-        </dependency>
-
-        <!--Для хорошего маппинга.-->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.5.3.Final</version>
-        </dependency>
-        <!--💡 Библиотеки регулярно обновляются, и какую бы версию мы ни указали в уроке, через некоторое
-        время, неделю или месяц появится новая. Безопасно обновление версии происходит обычно в тех случаях,
-        когда мажорная версия (первая цифра) не изменилась.
-        Например, обновить Jackson с 2.13.3 на 2.14.1 с высокой гарантией безопасно.
-        А вот если обновить с 2.13.3 на 3.1.2, можно сломать проект — в другой мажорной версии могут
-        быть другие названия классов и методов.-->
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-todo Ввести зависимости для бута!!!
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -108,6 +46,396 @@ todo Ввести зависимости для бута!!!
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
     </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.project-lombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <spring.profiles.active>test</spring.profiles.active>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <configuration>
+                        <configLocation>checkstyle.xml</configLocation>
+                        <failOnViolation>true</failOnViolation>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>compile</phase>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>10.3</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.7.0.0</version>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>High</threshold>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.8</version>
+                    <configuration>
+                        <output>file</output>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>jacoco-initialize</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>jacoco-check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <rule>
+                                        <element>BUNDLE</element>
+                                        <limits>
+                                            <limit>
+                                                <counter>INSTRUCTION</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.01</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>LINE</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.9</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>BRANCH</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.6</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>COMPLEXITY</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.6</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>METHOD</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.7</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>CLASS</counter>
+                                                <value>MISSEDCOUNT</value>
+                                                <maximum>1</maximum>
+                                            </limit>
+                                        </limits>
+                                    </rule>
+                                </rules>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>jacoco-report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <profiles>
+        <profile>
+            <id>check</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </reporting>
+        </profile>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
+
+
+        <!--
+        <?xml version="1.0" encoding="UTF-8"?>
+        <project xmlns="http://maven.apache.org/POM/4.0.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            <modelVersion>4.0.0</modelVersion>
+
+            <groupId>ru.practicum</groupId>
+            <artifactId>Sprint14-Final</artifactId>
+            <version>1.0-SNAPSHOT</version>
+
+            <parent>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>2.7.2</version>
+                <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
+            </parent>
+
+            <properties>
+                <maven.compiler.source>11</maven.compiler.source>
+                <maven.compiler.target>11</maven.compiler.target>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                &lt;!&ndash;После нескольких минут поиска, выяснилось, что нужно определенным образом соединить Lombok и Mapstruct.
+                 В документации Mapstruct есть информация об этом.
+                После исследования примера, который предложили разработчики из Mapstruct, обновим наш pom.xml:
+                Добавим отдельно версии:&ndash;&gt;
+                <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+                <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+            </properties>
+
+            <dependencies>
+        &lt;!&ndash;
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-core</artifactId>
+                    &lt;!&ndash;Слово “embed” в названии зависимости — это сокращение от англ. “embedded” — «встроенный».
+                    Контейнер будет встроен в наш проект — нам не нужно будет его запускать как отдельное приложение.
+                    Слово “core” можно перевести как «ядро» или «основа», это означает, что зависимость включает в себя
+                    только основные функции — нам их будет достаточно.&ndash;&gt;
+                    <version>9.0.65</version>
+                    &lt;!&ndash;Нам требуется версия 9.x — использует пакеты с базовыми классами сервлетов,
+                    начинающиеся на javax.servlet. Версия 10.x использует пакеты jakarta.servlet.
+                    Мы будем использовать javax.servlet и Tomcat 9.x, потому что Spring 5-й версии
+                    ещё не перешёл на использование новых пакетов и «не дружит» с Tomcat 10.&ndash;&gt;
+                </dependency>
+        &ndash;&gt;
+
+
+                &lt;!&ndash;Связываем Lombok и Mapstruct&ndash;&gt;
+                <dependency>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-mapstruct-binding</artifactId>
+                    <version>${lombok-mapstruct-binding.version}</version>
+                </dependency>
+
+
+                &lt;!&ndash;
+                        &lt;!&ndash;Чтобы заменить TestServlet на более полезный DispacherServlet, нужно
+                        создать WebApplicationContext — без него сервлет-диспетчер не будет работать.
+                        Для создания контекста добавьте в pom.xml зависимость spring-webmvc.
+                        На самом деле хватило бы и spring-context, но мы сразу добавим webmvc,
+                        так как потом будем работать с контроллерами. spring-context добавится автоматически,
+                        как транзитивная зависимость spring-webmvc.&ndash;&gt;
+                        <dependency>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-webmvc</artifactId>
+                            <version>5.3.23</version>
+                        </dependency>
+                &ndash;&gt;
+
+                &lt;!&ndash;Сначала добавьте зависимость lombok в pom.xml — это позволит сократить количество кода.&ndash;&gt;
+                <dependency>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                    <version>1.18.24</version>
+                </dependency>
+
+        &lt;!&ndash;
+                &lt;!&ndash;Чтобы научить Spring превращать объекты в JSON, подключим библиотеку Jackson.
+                Для этого добавьте нужную зависимость в pom.xml.&ndash;&gt;
+                <dependency>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                    <version>2.13.4.2</version>
+                </dependency>
+        &ndash;&gt;
+
+        &lt;!&ndash;
+                <dependency>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                    <version>1.4.4</version>
+                </dependency>
+        &ndash;&gt;
+
+                &lt;!&ndash;Для хорошего маппинга.&ndash;&gt;
+                <dependency>
+                    <groupId>org.mapstruct</groupId>
+                    <artifactId>mapstruct</artifactId>
+                    <version>1.5.3.Final</version>
+                </dependency>
+                &lt;!&ndash;💡 Библиотеки регулярно обновляются, и какую бы версию мы ни указали в уроке, через некоторое
+                время, неделю или месяц появится новая. Безопасно обновление версии происходит обычно в тех случаях,
+                когда мажорная версия (первая цифра) не изменилась.
+                Например, обновить Jackson с 2.13.3 на 2.14.1 с высокой гарантией безопасно.
+                А вот если обновить с 2.13.3 на 3.1.2, можно сломать проект — в другой мажорной версии могут
+                быть другие названия классов и методов.&ndash;&gt;
+
+
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </dependency>
+
+
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-test</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-configuration-processor</artifactId>
+                    <optional>true</optional>
+                </dependency>
+
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.5.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                            <annotationProcessorPaths>
+                                <path>
+                                    <groupId>org.mapstruct</groupId>
+                                    <artifactId>mapstruct-processor</artifactId>
+                                    <version>1.5.3.Final</version>
+                                </path>
+                            </annotationProcessorPaths>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </project>-->

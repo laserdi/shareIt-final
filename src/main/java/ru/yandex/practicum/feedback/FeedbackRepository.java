@@ -5,14 +5,12 @@ import java.util.List;
 public interface FeedbackRepository {
     /**
      * Получить все отзывы о вещах.
-     *
      * @return список отзывов.
      */
     List<Feedback> getAllFeedbacks();
     
     /**
      * Получить отзыв по его ID.
-     *
      * @param id ID отзыва.
      * @return запрашиваемый отзыв.
      */
@@ -20,7 +18,6 @@ public interface FeedbackRepository {
     
     /**
      * Получить отзывы на вещь с id.
-     *
      * @param itemId ID вещи, для которой надо найти отзывы.
      * @return список отзывов вещи с ID.
      */
@@ -28,7 +25,6 @@ public interface FeedbackRepository {
     
     /**
      * Есть ли запрашиваемая отзыв с ID в хранилище.
-     *
      * @param id ID запрашиваемого отзыва.
      * @return запрашиваемый отзыв.
      */
@@ -36,14 +32,12 @@ public interface FeedbackRepository {
     
     /**
      * Удалить отзыв с ID из хранилища.
-     *
      * @param id ID удаляемого отзыва.
      */
     void removeFeedbackById(Long id);
     
     /**
      * Удалить все отзывы вещи с ID = itemId.
-     *
      * @param itemId ID вещи.
      */
     void removeFeedbacksByItemId(Long itemId);

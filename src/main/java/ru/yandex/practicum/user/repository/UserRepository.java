@@ -8,7 +8,6 @@ public interface UserRepository {
     
     /**
      * Добавить юзера в БД.
-     *
      * @param user пользователь.
      * @return добавляемый пользователь.
      */
@@ -16,29 +15,25 @@ public interface UserRepository {
     
     /**
      * Обновить юзера в БД.
-     *
      * @param user пользователь
      * @return обновлённый пользователь.
      */
-    User updateInStorage(User user);
+    User updateInStorage(User user, boolean[] isUpdateField);
     
     /**
      * Удалить пользователя из БД.
-     *
      * @param id ID удаляемого пользователя.
      */
     void removeFromStorage(Long id);
     
     /**
      * Получить список всех пользователей.
-     *
      * @return список пользователей.
      */
     List<User> getAllUsersFromStorage();
     
     /**
      * Получить пользователя по ID.
-     *
      * @param id ID пользователя.
      * @return User - пользователь присутствует в библиотеке.
      * <p>null - пользователя нет в библиотеке.</p>
@@ -48,7 +43,6 @@ public interface UserRepository {
     
     /**
      * Проверка наличия юзера в БД.
-     *
      * @param id пользователя.
      * @return True - пользователь найден. False - пользователя нет в БД.
      */
@@ -56,9 +50,8 @@ public interface UserRepository {
     
     /**
      * Проверка наличия пользователя по `Email`.
-     *
      * @param newEmail адрес эл. почты нового пользователя.
-     * @return True - пользователь с Email есть в БД. False - нет.
+     * @return ID пользователя с Email из БД. Null - нет такого email в БД.
      */
-    boolean isExistUserByEmail(String email);
+    Long getUserIdByEmail(String email);
 }
